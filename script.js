@@ -1,18 +1,25 @@
 // Funzione per caricare i dati dei libri dalla chiamata HTTP GET
-async function fetchBooks() {
-    try {
-        const response = await fetch(
-            "https://striveschool-api.herokuapp.com/books"
-        )
-        const books = await response.json()
-        displayBooks(books)
-    } catch (error) {
-        console.error("Errore nel recupero dei dati dei libri:", error)
-    }
+const fetchBook = function () {
+    fetch('https://striveschool-api.herokuapp.com/books')
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            } else {
+                throw new Error('Problemi a contattare il server!')
+            }
+        })
+        .then((data) => {
+            console.log(data)
+            displayBooks(data)
+            outherBook = data
+        })
+        .catch((err) => {
+            console.log('ERRORE!', err)
+        })
 }
 
 // Funzione per visualizzare i libri nella pagina
-function displayBooks(books) {
+const displayBooks = function (books) {
     const bookList = document.getElementById("bookList")
     bookList.innerHTML = ""
 
@@ -40,32 +47,32 @@ function displayBooks(books) {
 }
 
 // Funzione per aggiungere un libro al carrello
-function addToCart(title, price) {
+const addToCart = function (title, price) {
     const cartList = document.getElementById("cartList")
     const li = document.createElement("li")
     li.innerHTML = `
             ${title} - $${price}
-            <button class="btn btn-danger" onclick="removeFromCart(this)">Rimuovi dal Carrello</button>
+            <button class="btn btn-outline-danger" onclick="removeFromCart(this)">Rimuovi dal Carrello</button>
         `
     cartList.appendChild(li)
     updateCartStorage()
 }
 
 // Funzione per rimuovere un libro dal carrello
-function removeFromCart(button) {
+const removeFromCart = function (button) {
     const li = button.parentElement
     li.remove()
     updateCartStorage()
 }
 
 // Funzione per rimuovere una card dalla pagina
-function removeCard(button) {
+const removeCard = function (button) {
     const card = button.closest(".col-md-3")
     card.remove()
 }
 
 // Funzione per aggiornare il carrello nello storage del browser
-function updateCartStorage() {
+const updateCartStorage = function () {
     const cartList = document.getElementById("cartList")
     const items = []
     cartList.querySelectorAll("li").forEach((li) => {
@@ -76,7 +83,7 @@ function updateCartStorage() {
 
 // Inizializza la pagina caricando i libri e il carrello dallo storage
 window.onload = () => {
-    fetchBooks()
+    fetchBook()
     const cartList = document.getElementById("cartList")
     const cartItems = JSON.parse(localStorage.getItem("cart")) || []
     cartItems.forEach((item) => {
