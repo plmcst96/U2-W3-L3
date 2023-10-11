@@ -27,7 +27,7 @@ function displayBooks(books) {
                     <div class="card-body">
                         <h6 class="card-title text-nowrap overflow-hidden text-truncate">${book.title
             }</h6>
-                        <p class="card-text">$${book.price.toFixed(2)}</p>
+                        <p class="card-text">$${book.price}</p>
                         <button class="btn btn-primary" onclick="addToCart('${book.title
             }', ${book.price})">Aggiungi al Carrello</button>
                         <button class="btn btn-danger" onclick="removeCard(this)">Scarta</button>
@@ -44,7 +44,7 @@ function addToCart(title, price) {
     const cartList = document.getElementById("cartList")
     const li = document.createElement("li")
     li.innerHTML = `
-            ${title} - $${price.toFixed(2)}
+            ${title} - $${price}
             <button class="btn btn-danger" onclick="removeFromCart(this)">Rimuovi dal Carrello</button>
         `
     cartList.appendChild(li)
